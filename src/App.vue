@@ -1,5 +1,28 @@
 <script setup lang="ts">
-import { GoogleSignInButton } from 'vue3-google-signin';
+import { ref } from 'vue';
+import { GoogleSignInButton, type CredentialResponse } from 'vue3-google-signin';
+
+const access = ref('')
+const refresh = ref('')
+
+const handleSuccess = async (response: CredentialResponse) => {
+  const res = await fetch(import.meta.env.VITE_API_URL + '/auth/sign-in', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      auth_provider: 'google',
+      credential: response.credential
+    })
+  }).then((r) => r.json())
+  access.value = res.access_token
+  refresh.value = res.refresh_token
+}
+
+const handleError = (error: any) => {
+  console.error(error)
+}
 </script>
 
 <template>
@@ -14,7 +37,11 @@ import { GoogleSignInButton } from 'vue3-google-signin';
       </a>
     </div>
     <img src="/vite-deno.svg" alt="Vite with Deno" />
-    <GoogleSignInButton @success="console.log" @error="console.error" />
+    <pre v-if="access && refresh">
+      Access:   {{ access }}
+      Refresh:  {{ refresh }}
+    </pre>
+    <GoogleSignInButton v-else @success="handleSuccess" @error="handleError" />
   </div>
 </template>
 
