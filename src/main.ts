@@ -1,15 +1,15 @@
+import { createPinia } from "pinia";
 import { createApp } from "vue";
-import "./style.css";
+import GoogleSignInButtonPlugin from "vue3-google-login";
 import App from "./App.vue";
-import GoogleSignInButtonPlugin, {
-  type GoogleSignInPluginOptions,
-} from "vue3-google-signin";
+import "./style.css";
 
 createApp(App)
+  .use(createPinia())
   .use(
     GoogleSignInButtonPlugin,
     {
       clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    } satisfies GoogleSignInPluginOptions,
+    },
   )
   .mount("#app");

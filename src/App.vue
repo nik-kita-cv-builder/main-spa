@@ -1,28 +1,39 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { GoogleSignInButton, type CredentialResponse } from 'vue3-google-signin';
+import { onMounted, ref } from 'vue';
+import { type CallbackTypes, GoogleLogin } from 'vue3-google-login';
+import { useAuthStore } from './auth.store';
 
-const access = ref('')
-const refresh = ref('')
+const authStore = useAuthStore();
 
-const handleSuccess = async (response: CredentialResponse) => {
-  const res = await fetch(import.meta.env.VITE_API_URL + '/auth/sign-in', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json'
+authStore.auth_actor_ref.subscribe((state) => {
+  console.log(state.value);
+});
+
+const handleSuccess: CallbackTypes.CredentialCallback = async (response) => {
+  authStore.auth_actor_ref.send({
+    type: 'SIGN_IN_WITH_GOOGLE_SUCCESS',
+    payload: {
+      credential: response.credential!,
     },
-    body: JSON.stringify({
-      auth_provider: 'google',
-      credential: response.credential
-    })
-  }).then((r) => r.json())
-  access.value = res.access_token
-  refresh.value = res.refresh_token
+  })
 }
 
 const handleError = (error: any) => {
-  console.error(error)
+  console.error(error);
+  authStore.auth_actor_ref.send({
+    type: 'SIGN_IN_WITH_GOOGLE_FAIL',
+  })
 }
+const wait_for_user_consent = () => {
+  console.log('wait for user consent')
+  authStore.auth_actor_ref.send({
+    type: 'SIGN_IN_WITH_GOOGLE_START'
+  })
+}
+
+onMounted(() => {
+  wait_for_user_consent();
+})
 </script>
 
 <template>
@@ -37,11 +48,11 @@ const handleError = (error: any) => {
       </a>
     </div>
     <img src="/vite-deno.svg" alt="Vite with Deno" />
-    <pre v-if="access && refresh">
-      Access:   {{ access }}
-      Refresh:  {{ refresh }}
+    <pre v-if="authStore.select_auth_payload.isAuthenticated">
+      Access:   {{ authStore.select_auth_payload.access }}
+      Refresh:  {{ authStore.select_auth_payload.refresh }}
     </pre>
-    <GoogleSignInButton v-else @success="handleSuccess" @error="handleError" />
+    <GoogleLogin v-else :callback="handleSuccess" :error="handleError" />
   </div>
 </template>
 

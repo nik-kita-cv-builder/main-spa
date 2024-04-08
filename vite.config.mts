@@ -1,10 +1,11 @@
-import { defineConfig } from "npm:vite@^5.0.10";
 import vue from "npm:@vitejs/plugin-vue@^4.5.2";
+import { defineConfig } from "npm:vite@^5.0.10";
 
-import "npm:vue@^3";
 import "npm:@vueuse/core";
-import "npm:vue3-google-signin";
 import "npm:@xstate/vue";
+import "npm:pinia";
+import "npm:vue3-google-login";
+import "npm:vue@^3";
 import "npm:xstate";
 /**
  * @description
