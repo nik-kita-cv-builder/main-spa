@@ -5,11 +5,13 @@
       "npm:@vitejs/plugin-vue@^4.5.2": "npm:@vitejs/plugin-vue@4.6.2_vite@5.1.6_vue@3.4.21",
       "npm:@vue/tsconfig": "npm:@vue/tsconfig@0.5.1",
       "npm:@vueuse/core": "npm:@vueuse/core@10.9.0_vue@3.4.21",
+      "npm:@xstate/vue": "npm:@xstate/vue@3.1.1_vue@3.4.21",
       "npm:superjson@1.13.3": "npm:superjson@1.13.3",
       "npm:vite": "npm:vite@5.1.6",
       "npm:vite@^5.0.10": "npm:vite@5.1.6",
       "npm:vue3-google-signin": "npm:vue3-google-signin@1.3.5_vue@3.4.21_vite@5.1.6",
-      "npm:vue@^3": "npm:vue@3.4.21"
+      "npm:vue@^3": "npm:vue@3.4.21",
+      "npm:xstate": "npm:xstate@5.9.1"
     },
     "npm": {
       "@babel/parser@7.24.0": {
@@ -383,6 +385,12 @@
         "integrity": "sha512-Uud2IWncmAfJvRaFYzv5OHDli+FbOzxiVEQdLCKQKLyhz94PIyFC3CHcH7EDMwIn8NPtD06+PNbC/PiO0LGLtw==",
         "dependencies": {
           "vue-demi": "vue-demi@0.14.7_vue@3.4.21"
+        }
+      },
+      "@xstate/vue@3.1.1_vue@3.4.21": {
+        "integrity": "sha512-2NkLNNUGKKv1dnpZbttfQs+fb5n3fCQEPp04oVGnPB9lWvOHmFQAc+UmIK7f8cMEZmBbbhGI5pXZ+90g5hUZIg==",
+        "dependencies": {
+          "vue": "vue@3.4.21"
         }
       },
       "ajv@6.12.6": {
@@ -772,6 +780,10 @@
           "@vue/shared": "@vue/shared@3.4.21"
         }
       },
+      "xstate@5.9.1": {
+        "integrity": "sha512-85edx7iMqRJSRlEPevDwc98EWDYUlT5zEQ54AXuRVR+G76gFbcVTAUdtAeqOVxy8zYnUr9FBB5114iK6enljjw==",
+        "dependencies": {}
+      },
       "yallist@4.0.0": {
         "integrity": "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==",
         "dependencies": {}
@@ -789,6 +801,10 @@
   },
   "remote": {
     "https://deno.land/std@0.203.0/dotenv/load.ts": "0636983549b98f29ab75c9a22a42d9723f0a389ece5498fe971e7bb2556a12e2",
-    "https://deno.land/std@0.203.0/dotenv/mod.ts": "1da8c6d0e7f7d8a5c2b19400b763bc11739df24acec235dda7ea2cfd3d300057"
+    "https://deno.land/std@0.203.0/dotenv/mod.ts": "1da8c6d0e7f7d8a5c2b19400b763bc11739df24acec235dda7ea2cfd3d300057",
+    "https://esm.sh/v135/xstate@5.9.1/denonext/actors.js": "a06d05ef2fcca2fef7960121629465e4f409b855a025bf9c30ca43523e35cad1",
+    "https://esm.sh/v135/xstate@5.9.1/denonext/dev.js": "1f4d56ef19372bfd0f35a6de50d7bc417e9f0d2e0b858330a2fa37ec535afd48",
+    "https://esm.sh/v135/xstate@5.9.1/denonext/dist/xstate.esm.js": "9aa4fe61727af9c445b4bd3db059a9e495ef0b24441ae02c74944c887b55c38a",
+    "https://esm.sh/xstate@5.9.1/dist/xstate.esm.js": "8ae684ebdae99ca488da1a0700505d6f39093d346a86c15ada2a6fc452393c85"
   }
 }

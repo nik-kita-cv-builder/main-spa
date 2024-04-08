@@ -4,6 +4,8 @@ import vue from "npm:@vitejs/plugin-vue@^4.5.2";
 import "npm:vue@^3";
 import "npm:@vueuse/core";
 import "npm:vue3-google-signin";
+import "npm:@xstate/vue";
+import "npm:xstate";
 /**
  * @description
  * # wtf
