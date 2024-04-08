@@ -6,6 +6,7 @@
     "serve": "deno run --allow-net --allow-read https://deno.land/std@0.157.0/http/file_server.ts dist/"
   },
   "imports": {
+    "@std/assert": "jsr:@std/assert@^0.221.0",
     "xstate": "https://esm.sh/xstate@5.9.1/dist/xstate.esm.js"
   }
 }

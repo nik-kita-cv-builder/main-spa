@@ -1,0 +1,9 @@
+{
+  "deno.enable": true,
+  "deno.unstable": true,
+  "deno.enablePaths": [
+    "deno.json",
+    "vite.config.mts",
+    "src/machines/auth.machine.v1.deno.test.ts"
+  ]
+}

@@ -1,5 +1,6 @@
+import { assertEquals, assertNotEquals } from "@std/assert";
 // @deno-types='npm:xstate'
-import { assign, fromPromise, setup } from "xstate";
+import { assign, createActor, fromPromise, setup } from "xstate";
 
 type Ctx = {
   access_token: null | string;
@@ -27,7 +28,7 @@ export const impl = {
   },
 };
 
-export const machine = setup({
+export const auth_machine_v1 = setup({
   types: {
     context: {} as Ctx,
     events: {} as
@@ -245,4 +246,79 @@ export const machine = setup({
       },
     },
   },
+});
+
+Deno.test("Should check prev auth session and return to Guest state", async (t) => {
+  await t.step("refresh_token is missing", () => {
+    (impl as any).get_auth_payload = () => {
+      return {
+        access_token: "access",
+        refresh_token: null,
+      };
+    };
+    const actor = createActor(auth_machine_v1, {});
+    assertEquals(actor.getSnapshot().value, { Guest: "Exchanging_visitor" });
+    actor.subscribe((s) => {
+      console.log(s.value);
+    });
+    actor.start();
+    assertEquals(actor.getSnapshot().value, { Guest: "Exchanging_visitor" });
+    actor.stop();
+  });
+
+  await t.step("both tokens are missing", () => {
+    (impl as any).get_auth_payload = () => {
+      return {
+        access_token: null,
+        refresh_token: null,
+      };
+    };
+    const actor = createActor(auth_machine_v1, {});
+    assertEquals(actor.getSnapshot().value, { Guest: "Exchanging_visitor" });
+    actor.subscribe((s) => {
+      console.log(s.value);
+    });
+    actor.start();
+    assertEquals(actor.getSnapshot().value, { Guest: "Exchanging_visitor" });
+    actor.stop();
+  });
+});
+
+Deno.test("Should check prev auth session and transmit to User state", async (t) => {
+  await t.step("access_token is actual", async () => {
+    (impl as any).get_auth_payload = () => {
+      return {
+        access_token: "access",
+        refresh_token: "refresh",
+      };
+    };
+    const actor = createActor(auth_machine_v1, {});
+    assertEquals(actor.getSnapshot().value, { Guest: "Checking_access_token" });
+    actor.subscribe((s) => {
+      console.log(s.value);
+    });
+    actor.start();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assertEquals(actor.getSnapshot().value, { User: "Active_session" });
+    actor.stop();
+  });
+  await t.step("access_token is not actual, but refresh is", async () => {
+    (impl as any).get_auth_payload = () => {
+      return {
+        access_token: null,
+        refresh_token: "refresh",
+      };
+    };
+    const actor = createActor(auth_machine_v1, {});
+    assertNotEquals(actor.getSnapshot().value, {
+      Guest: "Checking_access_token",
+    });
+    actor.subscribe((s) => {
+      console.log(s.value);
+    });
+    actor.start();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assertEquals(actor.getSnapshot().value, { User: "Active_session" });
+    actor.stop();
+  });
 });
